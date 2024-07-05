@@ -192,7 +192,7 @@ func StartRegistry(t *testing.T, name string) testutils.Container {
 	t.Helper()
 
 	c := testutils.NewDockerContainer(name, "registry serve /etc/docker/registry/config.yml",
-		testutils.WithImage("registry:2"),
+		testutils.WithImage("ghcr.io/inspektor-gadget/ci/registry:2"),
 		testutils.WithoutWait(),
 		testutils.WithPortBindings(nat.PortMap{
 			"5000/tcp": []nat.PortBinding{{HostIP: "127.0.0.1"}},

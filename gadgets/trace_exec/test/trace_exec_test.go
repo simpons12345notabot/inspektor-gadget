@@ -56,7 +56,7 @@ func TestTraceExec(t *testing.T) {
 	containerFactory, err := containers.NewContainerFactory(utils.Runtime)
 	require.NoError(t, err, "new container factory")
 	containerName := "test-trace-exec"
-	containerImage := "docker.io/library/busybox:latest"
+	containerImage := "ghcr.io/inspektor-gadget/ci/busybox:latest"
 
 	var ns string
 	containerOpts := []containers.ContainerOption{

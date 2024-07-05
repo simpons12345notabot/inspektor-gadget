@@ -30,7 +30,7 @@ func runTopFile(t *testing.T, ns string, cmd string) {
 		StartAndStop: true,
 		ValidateOutput: func(t *testing.T, output string) {
 			expectedBaseJsonObj := RunEventToObj(t, &types.Event{
-				CommonData: BuildCommonData(ns, WithContainerImageName("docker.io/library/busybox:latest", isDockerRuntime)),
+				CommonData: BuildCommonData(ns, WithContainerImageName("ghcr.io/inspektor-gadget/ci/busybox:latest", isDockerRuntime)),
 			})
 
 			expectedTopFIleJsonObj := map[string]interface{}{
