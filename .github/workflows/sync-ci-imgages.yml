@@ -1,0 +1,26 @@
+name: Sync CI container images
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+env:
+  REGISTRY: ghcr.io
+jobs:
+  sync-ci-images:
+    runs-on: ubuntu-latest
+    if: github.repository == 'inspektor-gadget/inspektor-gadget'
+    permissions:
+        # allow publishing container image
+        # in case of public fork repo/packages permissions will always be read
+        contents: read
+        packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sync CI container images
+        run: ./tools/sync-ci-images.sh
