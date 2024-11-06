@@ -19,10 +19,14 @@ ARCH_CLEANED = $(subst amd64,x86,$(ARCH))
 OUTPUT ?= pkg/btfgen/btfs
 
 SOURCE_BTF_FILES = $(shell find $(BTFHUB_ARCHIVE)/ -iregex ".*$(subst x86,x86_64,$(ARCH_CLEANED)).*" -type f -name '*.btf.tar.xz')
+$(warning SOURCE_BTF_FILES is $(SOURCE_BTF_FILES))
 MIN_CORE_BTF_FILES = $(patsubst $(BTFHUB_ARCHIVE)/%.btf.tar.xz, $(OUTPUT)/$(ARCH_CLEANED)/%.btf, $(SOURCE_BTF_FILES))
+$(warning MIN_CORE_BTF_FILES is $(MIN_CORE_BTF_FILES))
 BPF_ALL_O_FILES = $(shell find pkg/ -type f -regex ".*\($(ARCH_CLEANED)\|bpfel\).o")
+$(warning BPF_ALL_O_FILES is $(BPF_ALL_O_FILESw))
 # Filter out BPF objects that only contain BPF maps without BPF programs
 BPF_PROGS_O_FILES = $(filter-out pkg/gadgettracermanager/containers-map/containersmap_bpfel%,$(BPF_ALL_O_FILES))
+$(warning BPF_PROGS_O_FILES is $(BPF_PROGS_O_FILES))
 
 .PHONY: all
 all: $(MIN_CORE_BTF_FILES)
