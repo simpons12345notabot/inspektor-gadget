@@ -9,6 +9,7 @@ TEST_ARTIFACTS = \
 	config \
 	map \
 	perf \
+	array \
 	#
 
 all: $(TEST_ARTIFACTS)
