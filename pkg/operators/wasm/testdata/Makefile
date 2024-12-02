@@ -10,6 +10,7 @@ TEST_ARTIFACTS = \
 	map \
 	perf \
 	array \
+	syscall \
 	#
 
 all: $(TEST_ARTIFACTS)
