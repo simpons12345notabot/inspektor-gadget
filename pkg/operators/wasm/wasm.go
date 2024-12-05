@@ -206,6 +206,8 @@ func (i *wasmOperatorInstance) init(
 	target oras.ReadOnlyTarget,
 	desc ocispec.Descriptor,
 ) error {
+	fmt.Printf("Initializing wasm operator\n")
+
 	ctx := gadgetCtx.Context()
 	rtConfig := wazero.NewRuntimeConfig().
 		WithCloseOnContextDone(true).
@@ -221,6 +223,18 @@ func (i *wasmOperatorInstance) init(
 	i.addConfigFuncs(env)
 	i.addMapFuncs(env)
 	i.addHandleFuncs(env)
+
+	go func() {
+		for {
+			if i.handleMap == nil {
+				return
+			}
+			time.Sleep(time.Second * 1)
+			i.handleLock.Lock()
+			fmt.Printf("Handles: %d\n", len(i.handleMap))
+			i.handleLock.Unlock()
+		}
+	}()
 
 	if _, err := env.Instantiate(ctx); err != nil {
 		return fmt.Errorf("instantiating host module: %w", err)
@@ -302,6 +316,7 @@ func (i *wasmOperatorInstance) Start(gadgetCtx operators.GadgetContext) error {
 }
 
 func (i *wasmOperatorInstance) Stop(gadgetCtx operators.GadgetContext) error {
+	fmt.Printf("Stopping wasm operator\n")
 	defer func() {
 		i.handleLock.Lock()
 		i.handleMap = nil
