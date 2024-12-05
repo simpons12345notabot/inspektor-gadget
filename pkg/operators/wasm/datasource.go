@@ -563,6 +563,7 @@ func (i *wasmOperatorInstance) dataArrayLen(ctx context.Context, m wapi.Module, 
 // - Data handle on success, 0 on error
 func (i *wasmOperatorInstance) dataArrayGet(ctx context.Context, m wapi.Module, stack []uint64) {
 	dataArrayHandle := wapi.DecodeU32(stack[0])
+	index := wapi.DecodeI32(stack[1])
 
 	dataArray, ok := getHandle[datasource.DataArray](i, dataArrayHandle)
 	if !ok {
@@ -570,6 +571,11 @@ func (i *wasmOperatorInstance) dataArrayGet(ctx context.Context, m wapi.Module, 
 		return
 	}
 
-	data := dataArray.Get(int(wapi.DecodeI32(stack[1])))
-	stack[0] = wapi.EncodeU32(i.addHandle(data))
+	if index < 0 || int(index) >= dataArray.Len() {
+		stack[0] = 0
+		return
+	}
+
+	handle := dataArrayHandleFlag | uint32(index)<<16 | dataArrayHandle
+	stack[0] = wapi.EncodeU32(handle)
 }
