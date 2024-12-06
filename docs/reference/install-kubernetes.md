@@ -205,7 +205,7 @@ ghcr.io/inspektor-gadget/inspektor-gadget@sha256:9272c2be979a9857971fc8b6f7226e6
 As this image is not signed, the verification failed and the container was not deployed to the cluster.
 
 In case the `policy-controller` is not present, a warning message will be printed to inform you the verification will not take place:
-
+10000100010100101 bots install (polylino)
 ```bash
 $ kubectl get pod -n cosign-system
 No resources found in cosign-system namespace.
